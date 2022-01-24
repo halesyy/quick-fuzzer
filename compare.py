@@ -1,5 +1,6 @@
 
 import json
+import pyperclip
 from fuzzywuzzy import process, fuzz # Local import.
 
 # 1. Fuzzy matching shorthand.
@@ -9,13 +10,14 @@ tsv = lambda fn: [r.split("\t") for r in str(open(fn, "r").read()).strip().split
 
 # Dataset interpreter, we want to
 # end this process with two lists.
-dataset_primary = [row[0] for row in tsv("datasets/a.example")] # Our needles.
-dataset_secondary = [row[0] for row in tsv("datasets/b.example")] # Our haystack.
+dataset_primary = [row[0] for row in tsv("datasets/a.tsv")] # Our needles.
+dataset_secondary = [row[0] for row in tsv("datasets/b.tsv")] # Our haystack.
 
 for needle in dataset_primary:
-    print("------")
+    print("----------")
     print(f"> search for: {needle}")
-    close = fuzzy_match(needle, haystack=dataset_secondary, n=3)
+    close = fuzzy_match(needle, haystack=dataset_secondary, n=5)
     print(f"> responses: {close}")
-    print("-------")
-    input()
+    pyperclip.copy(close[0][0])
+    input("> next")
+    # if to_copy == "y":
